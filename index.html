@@ -1,54 +1,94 @@
-const API = "https://stock-analyzer-backend-hnh4.onrender.com";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>📊 Smart Value HQ – Stock Analyzer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      padding: 40px;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #1d3557;
+    }
+    button {
+      background: #457b9d;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 0 auto 30px;
+      display: block;
+    }
+    button:hover {
+      background: #1d3557;
+    }
+    .top-picks {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+    .pick-card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 16px;
+      width: 240px;
+    }
+    .pick-card h3 {
+      margin: 0 0 8px;
+      color: #2a2a2a;
+    }
+    .pick-card p {
+      margin: 4px 0;
+      font-size: 14px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+      text-align: left;
+    }
+    th {
+      background-color: #dee2e6;
+      color: #222;
+    }
+    #status {
+      text-align: center;
+      font-style: italic;
+      margin-bottom: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📊 Smart Value HQ – Stock Analyzer</h1>
+    <button onclick="loadData()">🔄 Refresh Table & Top Picks</button>
+    <div id="status"></div>
+    <div id="picks"></div>
+    <div id="table"></div>
+  </div>
 
-async function loadData() {
-  document.getElementById("picks").innerHTML = "⏳ Loading top picks...";
-  document.getElementById("table").innerHTML = "⏳ Loading table...";
-
-  try {
-    const [picksRes, stocksRes] = await Promise.all([
-      fetch(`${API}/api/top-picks`).then(res => res.json()),
-      fetch(`${API}/api/stocks`).then(res => res.json())
-    ]);
-
-    renderTopPicks(picksRes.topPicks);
-    renderTable(stocksRes.stocks);
-  } catch (err) {
-    console.error(err);
-    document.getElementById("picks").innerHTML = "❌ Failed to load top picks.";
-    document.getElementById("table").innerHTML = "❌ Failed to load table.";
-  }
-}
-
-function renderTopPicks(picks) {
-  let html = `<h2>🏆 Top 5 Picks</h2><div style="display:flex; gap:10px; flex-wrap:wrap;">`;
-  picks.forEach(p => {
-    html += `<div style="border:1px solid #ccc; padding:10px; width:200px;">
-      <h3>${p.symbol}</h3>
-      <p><strong>${p.company}</strong></p>
-      <p>Score: ${p.score?.toFixed(2)}</p>
-      <p>${p.description?.slice(0, 100)}...</p>
-    </div>`;
-  });
-  html += `</div>`;
-  document.getElementById("picks").innerHTML = html;
-}
-
-function renderTable(stocks) {
-  let html = `<h2>📊 Stock Data</h2><div style="overflow-x:auto;"><table border="1" cellpadding="6"><thead><tr>
-    <th>Symbol</th><th>Company</th><th>Price</th><th>PE</th><th>PB</th>
-    <th>Dividend Yield</th><th>Score</th>
-  </tr></thead><tbody>`;
-
-  stocks.forEach(s => {
-    html += `<tr>
-      <td>${s.symbol}</td><td>${s.company}</td><td>${s.price?.toFixed(2)}</td>
-      <td>${s.pe}</td><td>${s.pb}</td><td>${s.dividendYield}</td><td>${s.score?.toFixed(2)}</td>
-    </tr>`;
-  });
-
-  html += `</tbody></table></div>`;
-  document.getElementById("table").innerHTML = html;
-}
-
-// Auto-load on first visit
-loadData();
+  <script src="main.js"></script>
+</body>
+</html>
